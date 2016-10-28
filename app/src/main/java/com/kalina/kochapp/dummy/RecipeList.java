@@ -11,34 +11,34 @@ import java.util.Map;
  * <p>
  * TODO: Replace all uses of this class before publishing your app.
  */
-public class DummyContent {
+public class RecipeList {
 
     /**
      * An array of sample (dummy) items.
      */
-    public static final List<DummyItem> ITEMS = new ArrayList<DummyItem>();
+    public static final List<Recipe> ITEMS = new ArrayList<Recipe>();
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
+    public static final Map<String, Recipe> ITEM_MAP = new HashMap<String, Recipe>();
 
     private static final int COUNT = 25;
 
-    static {
+    public static void createRecipes(){
         // Add some sample items.
         for (int i = 1; i <= COUNT; i++) {
-            addItem(createDummyItem(i));
+            addItem(createRecipeItem(i));
         }
     }
 
-    private static void addItem(DummyItem item) {
+    private static void addItem(Recipe item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
 
-    private static DummyItem createDummyItem(int position) {
-        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
+    private static Recipe createRecipeItem(int position) {
+        return new Recipe(String.valueOf(position), "Item " + position, makeIngredients(position), makeDetails(position));
     }
 
     private static String makeDetails(int position) {
@@ -50,18 +50,28 @@ public class DummyContent {
         return builder.toString();
     }
 
+    private static HashMap<String, Double> makeIngredients(int position) {
+        HashMap<String, Double> newIngredients = new HashMap<>();
+        newIngredients.put("First Ingredient", 1.5);
+        newIngredients.put("Second Ingredient", 5.5);
+        newIngredients.put("Third Ingredient", 3.0);
+        return newIngredients;
+    }
+
     /**
      * A dummy item representing a piece of content.
      */
-    public static class DummyItem {
+    public static class Recipe {
         public final String id;
         public final String content;
-        public final String details;
+        public final HashMap<String, Double> ingredients;
+        public final String instructions;
 
-        public DummyItem(String id, String content, String details) {
+        public Recipe(String id, String content, HashMap<String, Double> ingredients, String instructions) {
             this.id = id;
             this.content = content;
-            this.details = details;
+            this.ingredients = ingredients;
+            this.instructions = instructions;
         }
 
         @Override
