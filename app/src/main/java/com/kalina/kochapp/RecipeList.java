@@ -1,4 +1,4 @@
-package com.kalina.kochapp.dummy;
+package com.kalina.kochapp;
 
 import java.util.ArrayList;
 import java.util.HashMap;

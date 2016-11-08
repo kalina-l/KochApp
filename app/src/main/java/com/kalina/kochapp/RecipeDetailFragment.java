@@ -1,15 +1,15 @@
 package com.kalina.kochapp;
 
 import android.app.Activity;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
-
-import com.kalina.kochapp.dummy.RecipeList;
 
 /**
  * A fragment representing a single Recipe detail screen.
@@ -28,6 +28,8 @@ public class RecipeDetailFragment extends Fragment {
      * The dummy content this fragment is presenting.
      */
     private RecipeList.Recipe mItem;
+
+    ListView ingredients;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -61,9 +63,18 @@ public class RecipeDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mItem.instructions);
+            ((TextView) rootView.findViewById(R.id.recipe_instructions)).setText(mItem.instructions);
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        ingredients = (ListView)getView().findViewById(R.id.lv_recipe_ingredients);
+        IngredientsListAdapter ila = new IngredientsListAdapter(this.getContext(), mItem.ingredients);
+        ingredients.setAdapter(ila);
     }
 }

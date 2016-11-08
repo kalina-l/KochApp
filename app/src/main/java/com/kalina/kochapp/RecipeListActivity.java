@@ -15,8 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-import com.kalina.kochapp.dummy.RecipeList;
-
 import java.util.List;
 
 /**
