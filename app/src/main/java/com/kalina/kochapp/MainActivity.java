@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_receipts) {
-            fillRecipeList();
             Intent recipeIntent = new Intent(MainActivity.this, RecipeListActivity.class);
             MainActivity.this.startActivity(recipeIntent);
         } else if (id == R.id.nav_gallery) {

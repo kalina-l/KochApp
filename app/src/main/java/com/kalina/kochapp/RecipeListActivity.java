@@ -72,9 +72,9 @@ public class RecipeListActivity extends AppCompatActivity {
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<RecipeList.Recipe> mValues;
+        private final List<Recipe> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<RecipeList.Recipe> items) {
+        public SimpleItemRecyclerViewAdapter(List<Recipe> items) {
             mValues = items;
         }
 
@@ -122,7 +122,7 @@ public class RecipeListActivity extends AppCompatActivity {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public RecipeList.Recipe mItem;
+            public Recipe mItem;
 
             public ViewHolder(View view) {
                 super(view);
