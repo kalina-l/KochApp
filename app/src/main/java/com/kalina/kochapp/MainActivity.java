@@ -107,13 +107,13 @@ public class MainActivity extends AppCompatActivity
             fillRecipeList();
             Intent recipeIntent = new Intent(MainActivity.this, RecipeListActivity.class);
             MainActivity.this.startActivity(recipeIntent);
-            Log.d("MSG:", "Rezepte geöffnet");
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
-
+        } else if (id == R.id.nav_profile) {
+            Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
+            MainActivity.this.startActivity(profileIntent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

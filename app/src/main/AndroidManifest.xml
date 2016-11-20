@@ -26,7 +26,8 @@
         <activity
             android:name=".RecipeListActivity"
             android:label="@string/title_recipe_list"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".RecipeDetailActivity"
             android:label="@string/title_recipe_detail"
@@ -41,7 +42,11 @@
             android:label="@string/title_activity_login" />
         <activity
             android:name=".RegisterActivity"
-            android:label="@string/title_activity_register"></activity>
+            android:label="@string/title_activity_register" />
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_profile_activity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

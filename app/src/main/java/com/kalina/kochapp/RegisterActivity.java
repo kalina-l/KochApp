@@ -43,6 +43,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,18 +166,28 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      */
     private void attemptRegistration() {
         // Reset errors.
+        mUsernameView.setError(null);
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
+        String name = mUsernameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
+        name = name.trim();
         email = email.trim();
         password = password.trim();
 
         boolean cancel = false;
         View focusView = null;
+
+        // Check for a valid username.
+        if (TextUtils.isEmpty(name)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mUsernameView;
+            cancel = true;
+        }
 
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
@@ -219,7 +230,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                             // signed in user can be handled in the listener.
                             if (task.isSuccessful()) {
                                 createCustomPopup();
-                                //Toast.makeText(RegisterActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                                FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                                User.updateProfile(mUsernameView.getText().toString());
                                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                                 finish();
                             } else {
