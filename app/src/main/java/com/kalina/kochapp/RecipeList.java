@@ -1,5 +1,14 @@
 package com.kalina.kochapp;
 
+import android.util.Log;
+import android.view.View;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +25,7 @@ public class RecipeList {
     /**
      * An array of sample (dummy) items.
      */
-    public static final List<Recipe> ITEMS = new ArrayList<Recipe>();
+    public static List<Recipe> ITEMS = new ArrayList<Recipe>();
 
     /**
      * A map of sample (dummy) items, by ID.
@@ -24,6 +33,31 @@ public class RecipeList {
     public static final Map<String, Recipe> ITEM_MAP = new HashMap<String, Recipe>();
 
     private static final int COUNT = 25;
+
+    public static void fetchRecipes(final RecipeListActivity startingActivity){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("recipes");
+        final List<Recipe> recipes = new ArrayList<Recipe>();
+        startingActivity.progressBar.setVisibility(View.VISIBLE);
+
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Log.e("TAG:" ," "+snapshot.getChildrenCount());
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    Recipe post = postSnapshot.getValue(Recipe.class);
+                    post.id = postSnapshot.getKey();
+                    Log.e("TAG:" ," "+post.content);
+                    addItem(post);
+                }
+                startingActivity.listAdapter.notifyDataSetChanged();
+                startingActivity.progressBar.setVisibility(View.GONE);
+            }
+            @Override
+            public void onCancelled(DatabaseError de) {
+                //Log.e("The read failed: " ,firebaseError.getMessage());
+            }
+        });
+    }
 
     public static void createRecipes(){
         HashMap<String, Double> newIngredients = new HashMap<>();

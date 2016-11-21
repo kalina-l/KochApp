@@ -55,8 +55,8 @@ class IngredientsListAdapter extends ArrayAdapter<HashMap<String, Double>>{
         Map.Entry<String, Double> item = getIngredient(position);
         Log.d("ADAPTER TEST: ", item.getKey() + " and " + Double.toString(item.getValue()) + " got printed.");
         // TODO replace findViewById by ViewHolder
-        ((TextView) result.findViewById(R.id.tv_ingredients_measures)).setText(item.getKey());
-        ((TextView) result.findViewById(R.id.tv_ingredients_name)).setText(Double.toString(item.getValue()));
+        ((TextView) result.findViewById(R.id.tv_ingredients_measures)).setText(Double.toString(item.getValue()));
+        ((TextView) result.findViewById(R.id.tv_ingredients_name)).setText(item.getKey());
 
         return result;
     }

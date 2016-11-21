@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -33,10 +34,22 @@ public class RecipeListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
 
+    private static boolean recipesLoaded = false;
+    public ProgressBar progressBar;
+
+    public SimpleItemRecyclerViewAdapter listAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_activity_list);
+
+        progressBar = (ProgressBar) findViewById(R.id.myProgressBar);
+        progressBar.setVisibility(View.GONE);
+        if(!recipesLoaded) {
+            RecipeList.fetchRecipes(this);
+            recipesLoaded = true;
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -66,7 +79,8 @@ public class RecipeListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(RecipeList.ITEMS));
+        listAdapter = new SimpleItemRecyclerViewAdapter(RecipeList.ITEMS);
+        recyclerView.setAdapter(listAdapter);
     }
 
     public class SimpleItemRecyclerViewAdapter
