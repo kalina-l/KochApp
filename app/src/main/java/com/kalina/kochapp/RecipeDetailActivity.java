@@ -1,6 +1,9 @@
 package com.kalina.kochapp;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 /**
@@ -42,6 +46,16 @@ public class RecipeDetailActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        // FILL THE COLLAPSINGTOOLBARLAYOUT WITH A RECEIPT IMAGE
+        Bundle b = getIntent().getExtras();
+        String item_id = "";
+        if(b != null)
+            item_id = b.getString(RecipeDetailFragment.ARG_ITEM_ID);
+        Recipe mItem = RecipeList.ITEM_MAP.get(item_id);
+        Drawable image = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(mItem.image, 0, mItem.image.length));
+        ImageView ctl = (ImageView) findViewById(R.id.receipt_image);
+        ctl.setImageDrawable(image);
+
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
         // (e.g. when rotating the screen from portrait to landscape).
@@ -68,6 +82,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         if (id == android.R.id.home) {
             // This ID represents the Home or Up button. In the case of this
             // activity, the Up button is shown. For

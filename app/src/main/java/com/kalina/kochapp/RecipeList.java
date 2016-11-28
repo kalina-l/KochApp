@@ -42,15 +42,17 @@ public class RecipeList {
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+
                 Log.e("TAG:" ," "+snapshot.getChildrenCount());
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                     Recipe post = postSnapshot.getValue(Recipe.class);
                     post.id = postSnapshot.getKey();
+                    post.loadImage(startingActivity);
                     Log.e("TAG:" ," "+post.content);
                     addItem(post);
                 }
-                startingActivity.listAdapter.notifyDataSetChanged();
-                startingActivity.progressBar.setVisibility(View.GONE);
+                //tartingActivity.listAdapter.notifyDataSetChanged();
+                //startingActivity.progressBar.setVisibility(View.GONE); // do it in the recipe class after loading images is over?
             }
             @Override
             public void onCancelled(DatabaseError de) {
@@ -73,8 +75,7 @@ public class RecipeList {
                         "\n" +
                         "Unter gelegentlichem Wenden die \"Zucchininudeln\" ca. 10 Minuten garen, sodass die Zucchinispaghetti noch bissfest sind. Mit Salz und Pfeffer würzen.\n" +
                         "\n" +
-                        "2 EL Crème fraîche, 2 EL italienische Kräuter und 2 EL geriebenen Parmesan unterrühren, kurz miterhitzen und anschließend servieren.");
-        addItem(recipe);
+                        "2 EL Crème fraîche, 2 EL italienische Kräuter und 2 EL geriebenen Parmesan unterrühren, kurz miterhitzen und anschließend servieren.", "gs://kochapp-a8b3f.appspot.com/receipt_images/Rezept3.jpg");
 
 
         newIngredients = new HashMap<>();
@@ -86,8 +87,7 @@ public class RecipeList {
         recipe = Recipe.writeNewRecipe("Apfelküchle", newIngredients,
                 "Eier, Zucker und Hefeweizen miteinander vermischen und soviel Mehl hinzugeben bis der Teig zähflüssig wird.\n" +
                         "3 Äpfel waschen, schälen und in Ringe schneiden. Apfelringe im Teig wenden und in einer Friteuse oder einer Pfanne mit reichlich Öl braten bis sie goldbraun sind. Abtropfen lassen und mit Zucker und Zimt bestreut servieren. Dazu passt Vanilleeis.\n" +
-                        "Tipp: Die Apfelküchle lassen sich hervorragend vorbereiten und später in der Mikrowelle aufwärmen..");
-        addItem(recipe);
+                        "Tipp: Die Apfelküchle lassen sich hervorragend vorbereiten und später in der Mikrowelle aufwärmen..", "gs://kochapp-a8b3f.appspot.com/receipt_images/Rezept1.png");
 
 
         newIngredients = new HashMap<>();
@@ -107,8 +107,7 @@ public class RecipeList {
                         "\n" +
                         "Die Ciabattascheiben aus dem Ofen holen und mit den Tomaten-Knoblauch Gemisch belegen, 1/2 - 1 EL pro Scheibe.\n" +
                         "\n" +
-                        "Gelingt immer, toll für die Grillsaison, lässt sich gut vorbereiten, wenn Gäste kommen, und ist rein vegetarisch.");
-        addItem(recipe);
+                        "Gelingt immer, toll für die Grillsaison, lässt sich gut vorbereiten, wenn Gäste kommen, und ist rein vegetarisch.", "gs://kochapp-a8b3f.appspot.com/receipt_images/Rezept2.png");
     }
 
     private static void addItem(Recipe item) {
