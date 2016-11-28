@@ -4,6 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:text="@string/ingredients_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/header_recipe_ingredients"
+        android:textSize="20sp"
+        android:textStyle="normal|bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp" />
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,6 +23,17 @@
         android:padding="16dp"
         tools:context="com.kalina.kochapp.RecipeDetailFragment"/>
 
+    <TextView
+        android:text="@string/instructions_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/header_recipe_instructions"
+        android:textSize="24sp"
+        android:textStyle="normal|bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp" />
+
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/recipe_instructions"
         style="?android:attr/textAppearanceLarge"
@@ -19,6 +41,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textIsSelectable="true"
-        tools:context="com.kalina.kochapp.RecipeDetailFragment" />
+        tools:context="com.kalina.kochapp.RecipeDetailFragment"
+        android:textSize="14sp" />
 
 </LinearLayout>

@@ -10,6 +10,10 @@
     <string name="title_activity_login">Sign in</string>
     <string name="title_profile_activity">Profile</string>
 
+    <!-- Strings related to headers -->
+    <string name="instructions_header">Beschreibung</string>
+    <string name="ingredients_header">Zutaten</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
