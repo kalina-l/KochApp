@@ -14,8 +14,27 @@
     tools:showIn="@layout/main_app_bar"
     tools:context="com.kalina.kochapp.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ProgressBar
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:id="@+id/myFeedProgressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:indeterminate="true"/>
+
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/feed_recipe_list"
+        android:name="com.kalina.kochapp.RecipeListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context="com.kalina.kochapp.RecipeListActivity"
+        tools:listitem="@layout/feed_list_content" >
+
+    </android.support.v7.widget.RecyclerView>
+
 </RelativeLayout>

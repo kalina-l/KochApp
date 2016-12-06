@@ -1,9 +1,5 @@
 package com.kalina.kochapp;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,16 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-
-
-import java.util.List;
 
 /**
  * An activity representing a list of Recipes. This activity
@@ -38,21 +26,25 @@ public class RecipeListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
 
-    private static boolean recipesLoaded = false;
+    //private static boolean recipesLoaded = false;
     public ProgressBar progressBar;
 
-    public SimpleItemRecyclerViewAdapter listAdapter;
+    public RecipeListAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_activity_list);
 
+        View recyclerView = findViewById(R.id.recipe_list);
+        assert recyclerView != null;
+        setupRecyclerView((RecyclerView) recyclerView);
+
         progressBar = (ProgressBar) findViewById(R.id.myProgressBar);
         progressBar.setVisibility(View.GONE);
-        if(!recipesLoaded) {
-            RecipeList.fetchRecipes(this);
-            recipesLoaded = true;
+        if(!MainActivity.recipesLoaded) {
+            RecipeList.fetchRecipes(progressBar, listAdapter);
+            MainActivity.recipesLoaded = true;
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -69,10 +61,6 @@ public class RecipeListActivity extends AppCompatActivity {
             }
         });
 
-        View recyclerView = findViewById(R.id.recipe_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
-
         if (findViewById(R.id.recipe_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -83,11 +71,11 @@ public class RecipeListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        listAdapter = new SimpleItemRecyclerViewAdapter(RecipeList.ITEMS);
+        listAdapter = new RecipeListAdapter(RecipeList.ITEMS, mTwoPane, new RecipeDetailFragment(), R.id.recipe_detail_container, R.layout.recipe_list_content);
         recyclerView.setAdapter(listAdapter);
     }
 
-    public class SimpleItemRecyclerViewAdapter
+    /*public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final List<Recipe> mValues;
@@ -156,5 +144,5 @@ public class RecipeListActivity extends AppCompatActivity {
                 return super.toString() + " '" + mContentView.getText() + "'";
             }
         }
-    }
+    }*/
 }

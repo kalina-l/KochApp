@@ -2,8 +2,11 @@ package com.kalina.kochapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -14,6 +17,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
+
 import com.google.firebase.auth.*;
 
 public class MainActivity extends AppCompatActivity
@@ -23,6 +28,11 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
 
+    private boolean mTwoPane;
+    public static boolean recipesLoaded = false;
+    public ProgressBar progressBar;
+    public RecipeListAdapter listAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +40,18 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.main_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        View recyclerView = findViewById(R.id.feed_recipe_list);
+        assert recyclerView != null;
+        setupRecyclerView((RecyclerView) recyclerView);
+
+        //Make Feed
+        progressBar = (ProgressBar) findViewById(R.id.myFeedProgressBar);
+        progressBar.setVisibility(View.GONE);
+        if(!recipesLoaded) {
+            RecipeList.fetchRecipes(progressBar, listAdapter);
+            recipesLoaded = true;
+        }
 
         //fillRecipeList();
 
@@ -59,6 +81,13 @@ public class MainActivity extends AppCompatActivity
             // Not logged in, launch the Log In activity
             loadLogInView();
         }
+    }
+
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+        listAdapter = new RecipeListAdapter(RecipeList.ITEMS, mTwoPane, new RecipeDetailFragment(), R.id.recipe_detail_container, R.layout.feed_list_content);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.addItemDecoration(new FeedRecipeItemDecoration(this));
+        recyclerView.setAdapter(listAdapter);
     }
 
     private void fillRecipeList(){
