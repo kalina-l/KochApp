@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
 
+        ApplicationManager.getCurrentUser();
+
         //Make Feed
         progressBar = (ProgressBar) findViewById(R.id.myFeedProgressBar);
         progressBar.setVisibility(View.GONE);

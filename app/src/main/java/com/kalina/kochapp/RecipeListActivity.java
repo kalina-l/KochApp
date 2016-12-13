@@ -42,10 +42,7 @@ public class RecipeListActivity extends AppCompatActivity {
 
         progressBar = (ProgressBar) findViewById(R.id.myProgressBar);
         progressBar.setVisibility(View.GONE);
-        if(!MainActivity.recipesLoaded) {
-            RecipeList.fetchRecipes(progressBar, listAdapter);
-            MainActivity.recipesLoaded = true;
-        }
+        RecipeList.displayRecipes(progressBar, listAdapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -71,7 +68,7 @@ public class RecipeListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        listAdapter = new RecipeListAdapter(RecipeList.ITEMS, mTwoPane, new RecipeDetailFragment(), R.id.recipe_detail_container, R.layout.recipe_list_content);
+        listAdapter = new RecipeListAdapter(ApplicationManager.currentUser.recipes, mTwoPane, new RecipeDetailFragment(), R.id.recipe_detail_container, R.layout.recipe_list_content);
         recyclerView.setAdapter(listAdapter);
     }
 

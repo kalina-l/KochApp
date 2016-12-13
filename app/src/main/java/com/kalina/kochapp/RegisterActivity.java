@@ -44,6 +44,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -230,7 +231,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                             // signed in user can be handled in the listener.
                             if (task.isSuccessful()) {
                                 createCustomPopup();
-                                FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                                FirebaseUser DBuser = mFirebaseAuth.getCurrentUser();
+                                User user = new User(mUsernameView.getText().toString());
+                                FirebaseDatabase.getInstance().getReference().child("users").child(DBuser.getUid()).setValue(user);
                                 User.updateProfile(mUsernameView.getText().toString());
                                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                                 finish();

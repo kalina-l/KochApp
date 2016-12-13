@@ -59,6 +59,19 @@ public class RecipeList {
         });
     }
 
+    public static void displayRecipes(final ProgressBar pg, final RecipeListAdapter la){
+
+        pg.setVisibility(View.VISIBLE);
+
+        do {
+            for (Recipe recipe : ApplicationManager.currentUser.recipes) {
+                recipe.loadImage(pg, la);
+            }
+        } while(!ApplicationManager.currentUserLoaded);
+
+        pg.setVisibility(View.INVISIBLE);
+    }
+
     public static void createRecipes(){
         HashMap<String, Double> newIngredients = new HashMap<>();
         newIngredients.put("Zuchinni", 3d);
