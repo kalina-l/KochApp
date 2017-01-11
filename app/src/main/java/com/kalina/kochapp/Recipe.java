@@ -3,17 +3,23 @@ package com.kalina.kochapp;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Kalina on 20.11.2016.
@@ -26,9 +32,10 @@ public class Recipe {
 
     public String id;
     public String content;
-    public HashMap<String, Double> ingredients;
+    public List<Ingredient> ingredients;
     public String instructions;
     public String image_path;
+    @Exclude
     public byte[] image = new byte[0];
     public boolean isPrivite;
 
@@ -36,13 +43,14 @@ public class Recipe {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public Recipe(String content, HashMap<String, Double> ingredients, String instructions, String image_path, boolean isPrivite) {
+    public Recipe(String content, List<Ingredient> ingredients, String instructions, String image_path, boolean isPrivite) {
         this.id = id;
         this.content = content;
         this.ingredients = ingredients;
         this.instructions = instructions;
         this.image_path = image_path;
         this.isPrivite = isPrivite;
+        this.image = new byte[0];
     }
 
     @Override
@@ -50,12 +58,11 @@ public class Recipe {
         return content;
     }
 
-    public static Recipe writeNewRecipe(String content, HashMap<String, Double> ingredients, String instructions, String image_path, boolean isPrivite) {
+    public static Recipe writeNewRecipe(String content, List<Ingredient> ingredients, String instructions, String image_path, boolean isPrivite) {
         Recipe recipe = new Recipe(content, ingredients, instructions, image_path, isPrivite);
 
         mDatabase.child("recipes").push().setValue(recipe);
         recipe.id = mDatabase.child("recipes").push().getKey();
-
         return recipe;
     }
 

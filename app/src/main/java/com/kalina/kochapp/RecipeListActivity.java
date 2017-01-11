@@ -1,5 +1,6 @@
 package com.kalina.kochapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -25,8 +26,7 @@ public class RecipeListActivity extends AppCompatActivity {
      * device.
      */
     private boolean mTwoPane;
-
-    //private static boolean recipesLoaded = false;
+    private static boolean recipesLoaded = false;
     public ProgressBar progressBar;
 
     public RecipeListAdapter listAdapter;
@@ -42,7 +42,12 @@ public class RecipeListActivity extends AppCompatActivity {
 
         progressBar = (ProgressBar) findViewById(R.id.myProgressBar);
         progressBar.setVisibility(View.GONE);
-        RecipeList.displayRecipes(progressBar, listAdapter);
+        if(!recipesLoaded) {
+            RecipeList.getUserRecipes(progressBar, listAdapter);
+            recipesLoaded = true;
+        } else {
+            listAdapter.notifyDataSetChanged();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,8 +58,8 @@ public class RecipeListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent recipeCreation = new Intent(RecipeListActivity.this, CreateRecipe.class);
+                RecipeListActivity.this.startActivity(recipeCreation);
             }
         });
 
@@ -67,79 +72,15 @@ public class RecipeListActivity extends AppCompatActivity {
         }
     }
 
+    protected void onResume(){
+        super.onResume();
+        if(recipesLoaded)
+            listAdapter.notifyDataSetChanged();
+    }
+
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        listAdapter = new RecipeListAdapter(ApplicationManager.currentUser.recipes, mTwoPane, new RecipeDetailFragment(), R.id.recipe_detail_container, R.layout.recipe_list_content);
+        listAdapter = new RecipeListAdapter(ApplicationManager.CURRENT_USER_RECIPES, mTwoPane, new RecipeDetailFragment(), R.id.recipe_detail_container, R.layout.recipe_list_content);
         recyclerView.setAdapter(listAdapter);
     }
 
-    /*public class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
-
-        private final List<Recipe> mValues;
-
-        public SimpleItemRecyclerViewAdapter(List<Recipe> items) {
-            mValues = items;
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recipe_list_content, parent, false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem = mValues.get(position);
-
-            Bitmap bmp = BitmapFactory.decodeByteArray(mValues.get(position).image, 0, mValues.get(position).image.length);
-            holder.mPreviewView.setImageBitmap(bmp);
-            holder.mContentView.setText(mValues.get(position).content);
-
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mTwoPane) {
-                        Bundle arguments = new Bundle();
-                        arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-                        RecipeDetailFragment fragment = new RecipeDetailFragment();
-                        fragment.setArguments(arguments);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.recipe_detail_container, fragment)
-                                .commit();
-                    } else {
-                        Context context = v.getContext();
-                        Intent intent = new Intent(context, RecipeDetailActivity.class);
-                        intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-
-                        context.startActivity(intent);
-                    }
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final ImageView mPreviewView;
-            public final TextView mContentView;
-            public Recipe mItem;
-
-            public ViewHolder(View view) {
-                super(view);
-                mView = view;
-                mPreviewView = (ImageView) view.findViewById(R.id.preview);
-                mContentView = (TextView) view.findViewById(R.id.content);
-            }
-
-            @Override
-            public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
-            }
-        }
-    }*/
 }

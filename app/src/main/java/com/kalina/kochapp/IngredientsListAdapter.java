@@ -10,20 +10,21 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by Kalina on 28.10.2016.
  */
 
-class IngredientsListAdapter extends ArrayAdapter<HashMap<String, Double>>{
+class IngredientsListAdapter extends ArrayAdapter<List<Ingredient>>{
 
     private final ArrayList mData;
 
-    public IngredientsListAdapter(Context context, Map<String, Double> map) {
+    public IngredientsListAdapter(Context context, List<Ingredient> list) {
         super(context, R.layout.recipe_ingredients_row);
         mData = new ArrayList();
-        mData.addAll(map.entrySet());
+        mData.addAll(list);
     }
 
     @Override
@@ -32,8 +33,8 @@ class IngredientsListAdapter extends ArrayAdapter<HashMap<String, Double>>{
     }
 
     //@Override
-    public Map.Entry<String, Double> getIngredient(int position) {
-        return (Map.Entry) mData.get(position);
+    public Object getIngredient(int position) {
+        return mData.get(position);
     }
 
     @Override
@@ -52,11 +53,12 @@ class IngredientsListAdapter extends ArrayAdapter<HashMap<String, Double>>{
             result = convertView;
         }
 
-        Map.Entry<String, Double> item = getIngredient(position);
-        Log.d("ADAPTER TEST: ", item.getKey() + " and " + Double.toString(item.getValue()) + " got printed.");
+        Ingredient item = (Ingredient) getIngredient(position);
+        Log.d("ADAPTER TEST: ", item.name + " got printed.");
         // TODO replace findViewById by ViewHolder
-        ((TextView) result.findViewById(R.id.tv_ingredients_measures)).setText(Double.toString(item.getValue()));
-        ((TextView) result.findViewById(R.id.tv_ingredients_name)).setText(item.getKey());
+        ((TextView) result.findViewById(R.id.tv_ingredients_quantity)).setText(String.format("%.0f",item.quantity));
+        ((TextView) result.findViewById(R.id.tv_ingredients_metrics)).setText(item.metric);
+        ((TextView) result.findViewById(R.id.tv_ingredients_name)).setText(item.name);
 
         return result;
     }

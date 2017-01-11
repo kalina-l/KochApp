@@ -11,7 +11,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,17 +25,10 @@ import java.util.Map;
  */
 public class RecipeList {
 
-    /**
-     * An array of sample (dummy) items.
-     */
-    public static List<Recipe> ITEMS = new ArrayList<Recipe>();
+    public static List<Recipe> ALL_RECIPES = new ArrayList<Recipe>();
+    public static final Map<String, Recipe> ALL_RECIPES_MAP = new HashMap<String, Recipe>();
 
-    /**
-     * A map of sample (dummy) items, by ID.
-     */
-    public static final Map<String, Recipe> ITEM_MAP = new HashMap<String, Recipe>();
-
-    public static void fetchRecipes(final ProgressBar pg, final RecipeListAdapter la){
+    public static void fetchGlobalRecipes(final ProgressBar pg, final RecipeListAdapter la){
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("recipes");
         pg.setVisibility(View.VISIBLE);
 
@@ -47,10 +42,8 @@ public class RecipeList {
                     post.id = postSnapshot.getKey();
                     post.loadImage(pg, la);
                     Log.e("TAG:" ," "+post.content);
-                    addItem(post);
+                    addGlobalRecipe(post);
                 }
-                //tartingActivity.listAdapter.notifyDataSetChanged();
-                //startingActivity.progressBar.setVisibility(View.GONE); // do it in the recipe class after loading images is over?
             }
             @Override
             public void onCancelled(DatabaseError de) {
@@ -59,13 +52,15 @@ public class RecipeList {
         });
     }
 
-    public static void displayRecipes(final ProgressBar pg, final RecipeListAdapter la){
+    public static void getUserRecipes(final ProgressBar pg, final RecipeListAdapter la){
 
         pg.setVisibility(View.VISIBLE);
 
         do {
             for (Recipe recipe : ApplicationManager.currentUser.recipes) {
                 recipe.loadImage(pg, la);
+                ApplicationManager.CURRENT_USER_RECIPES.add(recipe);
+                ApplicationManager.CURRENT_USER_RECIPE_MAP.put(recipe.id, recipe);
             }
         } while(!ApplicationManager.currentUserLoaded);
 
@@ -73,12 +68,12 @@ public class RecipeList {
     }
 
     public static void createRecipes(){
-        HashMap<String, Double> newIngredients = new HashMap<>();
-        newIngredients.put("Zuchinni", 3d);
-        newIngredients.put("Knoblauchzehen", 3d);
-        newIngredients.put("EL Creme Fraiche", 2d);
-        newIngredients.put("EL Italienische Kräuter", 2d);
-        newIngredients.put("EL Parmesan", 2d);
+        List<Ingredient> newIngredients = new ArrayList<>();
+        newIngredients.add(new Ingredient(3d, "", "Zuchinni"));
+        newIngredients.add(new Ingredient(3d, "", "Knoblauchzehen"));
+        newIngredients.add(new Ingredient(2d, "EL", "EL Creme Fraiche"));
+        newIngredients.add(new Ingredient(2d, "EL", "Italienische Kräuter"));
+        newIngredients.add(new Ingredient(2d, "EL", "Parmesan"));
         Recipe recipe = Recipe.writeNewRecipe("Zucchini-Nudeln", newIngredients,
                 "Die Enden der gewaschenen Zucchini abschneiden. Die Zucchini dann längs mit einem Juliennehobel in dünne, lange Streifen schneiden und beiseite stellen.\n" +
                         "\n" +
@@ -89,25 +84,25 @@ public class RecipeList {
                         "2 EL Crème fraîche, 2 EL italienische Kräuter und 2 EL geriebenen Parmesan unterrühren, kurz miterhitzen und anschließend servieren.", "gs://kochapp-a8b3f.appspot.com/receipt_images/Rezept3.jpg", false);
 
 
-        newIngredients = new HashMap<>();
-        newIngredients.put("Äpfel", 3d);
-        newIngredients.put("g Zucker", 50d);
-        newIngredients.put("ml Bier", 250d);
-        newIngredients.put("Eier", 2d);
-        newIngredients.put("g Mehl", 200d);
-        recipe = Recipe.writeNewRecipe("Apfelküchle", newIngredients,
+        newIngredients = new ArrayList<>();
+        newIngredients.add(new Ingredient(3d, "", "Äpfel"));
+        newIngredients.add(new Ingredient(50d, "g", "Zucker"));
+        newIngredients.add(new Ingredient(250d, "ml", "Bier"));
+        newIngredients.add(new Ingredient(2d, "", "Eier"));
+        newIngredients.add(new Ingredient(200d, "g", "Mehl"));
+        recipe = Recipe.writeNewRecipe("Apfelküchle",  newIngredients,
                 "Eier, Zucker und Hefeweizen miteinander vermischen und soviel Mehl hinzugeben bis der Teig zähflüssig wird.\n" +
                         "3 Äpfel waschen, schälen und in Ringe schneiden. Apfelringe im Teig wenden und in einer Friteuse oder einer Pfanne mit reichlich Öl braten bis sie goldbraun sind. Abtropfen lassen und mit Zucker und Zimt bestreut servieren. Dazu passt Vanilleeis.\n" +
                         "Tipp: Die Apfelküchle lassen sich hervorragend vorbereiten und später in der Mikrowelle aufwärmen..", "gs://kochapp-a8b3f.appspot.com/receipt_images/Rezept1.png", false);
 
 
-        newIngredients = new HashMap<>();
-        newIngredients.put("Tomaten", 5d);
-        newIngredients.put("Knoblauchzehen", 2d);
-        newIngredients.put("EL Olivenöl", 5d);
-        newIngredients.put("Ciabatta", 2d);
-        newIngredients.put("TL Gewürzmischung", 1d);
-        recipe = Recipe.writeNewRecipe("Bruschetta", newIngredients,
+        newIngredients = new ArrayList<>();
+        newIngredients.add(new Ingredient(5d, "", "Tomaten"));
+        newIngredients.add(new Ingredient(2d, "", "Knoblauchzehen"));
+        newIngredients.add(new Ingredient(5d, "EL", "Olivenöl"));
+        newIngredients.add(new Ingredient(2d, "", "Ciabatta"));
+        newIngredients.add(new Ingredient(1d, "TL", "Gewürzmischung"));
+        recipe = Recipe.writeNewRecipe("Bruschetta",  newIngredients,
                 "Zuerst die Tomaten waschen, vom Grün befreien, halbieren und dann in kleine Würfel schneiden. Dann den Knoblauch sehr klein schneiden, zu den Tomatenstücken geben und mit gut 3 EL Öl sowie 1 - 2 TL Tomatengewürzsalz mischen. Unbedingt mindestens 2 Stunden im Kühlschrank ziehen lassen.\n" +
                         "\n" +
                         "Den Backofen auf 180 - 200 °C (Umluft) vorheizen, die Tomatenstücke aus dem Kühlschrank nehmen. \n" +
@@ -121,25 +116,8 @@ public class RecipeList {
                         "Gelingt immer, toll für die Grillsaison, lässt sich gut vorbereiten, wenn Gäste kommen, und ist rein vegetarisch.", "gs://kochapp-a8b3f.appspot.com/receipt_images/Rezept2.png", false);
     }
 
-    private static void addItem(Recipe item) {
-        ITEMS.add(item);
-        ITEM_MAP.put(item.id, item);
-    }
-
-    private static String makeDetails(int position) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Details about Item: ").append(position);
-        for (int i = 0; i < position; i++) {
-            builder.append("\nMore details information here.");
-        }
-        return builder.toString();
-    }
-
-    private static HashMap<String, Double> makeIngredients(int position) {
-        HashMap<String, Double> newIngredients = new HashMap<>();
-        newIngredients.put("First Ingredient", 1.5);
-        newIngredients.put("Second Ingredient", 5.5);
-        newIngredients.put("Third Ingredient", 3.0);
-        return newIngredients;
+    private static void addGlobalRecipe(Recipe item) {
+        ALL_RECIPES.add(item);
+        ALL_RECIPES_MAP.put(item.id, item);
     }
 }

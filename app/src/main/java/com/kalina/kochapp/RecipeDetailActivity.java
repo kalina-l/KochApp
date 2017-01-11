@@ -8,13 +8,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 /**
  * An activity representing a single Recipe detail screen. This
@@ -31,15 +29,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -51,10 +40,32 @@ public class RecipeDetailActivity extends AppCompatActivity {
         String item_id = "";
         if(b != null)
             item_id = b.getString(RecipeDetailFragment.ARG_ITEM_ID);
-        Recipe mItem = RecipeList.ITEM_MAP.get(item_id);
+        final Recipe mItem = RecipeList.ALL_RECIPES_MAP.get(item_id);
         Drawable image = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(mItem.image, 0, mItem.image.length));
         ImageView ctl = (ImageView) findViewById(R.id.receipt_image);
         ctl.setImageDrawable(image);
+
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        setFloatingButtonSprite(fab, mItem);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(ApplicationManager.currentUser.recipeIds.contains(mItem.id)){
+                    //delete recipe from cookbook
+                    ApplicationManager.removeRecipe(mItem);
+                    Snackbar.make(view, "Dieses Rezept wurde aus deinem Kochbuch entfernt.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    fab.setImageResource(R.drawable.plus_icon);
+                }
+                else {
+                    //add recipe to the cookbook
+                    ApplicationManager.addRecipe(mItem);
+                    Snackbar.make(view, "Dieses Rezept wurde in dein Kochbuch hinzugefügt.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    fab.setImageResource(R.drawable.minus_icon);
+                }
+            }
+        });
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
@@ -76,6 +87,15 @@ public class RecipeDetailActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.recipe_detail_container, fragment)
                     .commit();
+        }
+    }
+
+    private void setFloatingButtonSprite(FloatingActionButton fb, Recipe item){
+        if(ApplicationManager.currentUser.recipeIds.contains(item.id)) {
+            fb.setImageResource(R.drawable.minus_icon);
+        }
+        else {
+            fb.setImageResource(R.drawable.plus_icon);
         }
     }
 

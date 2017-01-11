@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         progressBar = (ProgressBar) findViewById(R.id.myFeedProgressBar);
         progressBar.setVisibility(View.GONE);
         if(!recipesLoaded) {
-            RecipeList.fetchRecipes(progressBar, listAdapter);
+            RecipeList.fetchGlobalRecipes(progressBar, listAdapter);
             recipesLoaded = true;
         }
 
@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent recipeCreation = new Intent(MainActivity.this, CreateRecipe.class);
+                MainActivity.this.startActivity(recipeCreation);
             }
         });
 
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        listAdapter = new RecipeListAdapter(RecipeList.ITEMS, mTwoPane, new RecipeDetailFragment(), R.id.recipe_detail_container, R.layout.feed_list_content);
+        listAdapter = new RecipeListAdapter(RecipeList.ALL_RECIPES, mTwoPane, new RecipeDetailFragment(), R.id.recipe_detail_container, R.layout.feed_list_content);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.addItemDecoration(new FeedRecipeItemDecoration(this));
         recyclerView.setAdapter(listAdapter);

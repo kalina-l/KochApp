@@ -32,4 +32,26 @@
         completions."
     </string>
     <string name="title_activity_register">Register</string>
+
+    <!-- Strings related to ingredients spinner -->
+    <string-array name="metrics_array">
+        <item>(keine Einheit)</item>
+        <item>Becher</item>
+        <item>cm</item>
+        <item>Dosen</item>
+        <item>EL</item>
+        <item>g</item>
+        <item>große</item>
+        <item>Handvoll</item>
+        <item>kg</item>
+        <item>kleine</item>
+        <item>l</item>
+        <item>ml</item>
+        <item>Pck.</item>
+        <item>Prise/n</item>
+        <item>Schuss</item>
+        <item>Stiel/e</item>
+        <item>TL</item>
+        <item>Zehe/n</item>
+    </string-array>
 </resources>

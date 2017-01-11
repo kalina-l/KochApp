@@ -232,7 +232,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                             if (task.isSuccessful()) {
                                 createCustomPopup();
                                 FirebaseUser DBuser = mFirebaseAuth.getCurrentUser();
-                                User user = new User(mUsernameView.getText().toString());
+                                User user = new User(DBuser.getUid(), mUsernameView.getText().toString());
                                 FirebaseDatabase.getInstance().getReference().child("users").child(DBuser.getUid()).setValue(user);
                                 User.updateProfile(mUsernameView.getText().toString());
                                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));

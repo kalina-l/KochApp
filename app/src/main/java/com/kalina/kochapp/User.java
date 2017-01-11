@@ -18,7 +18,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Kalina on 20.11.2016.
@@ -28,6 +30,8 @@ public class User {
 
     public FirebaseUser dbUserReference;
 
+    @Exclude
+    public String uid;
     public String name;
     public List<String> recipeIds;
     @Exclude
@@ -40,10 +44,39 @@ public class User {
         recipes = new ArrayList<Recipe>();
     }
 
-    public User(String name){
+    public User(String uid, String name){
+        this.uid = uid;
         this.name = name;
         recipeIds = new ArrayList<String>();
         recipes = new ArrayList<Recipe>();
+    }
+
+    public void addRecipe(Recipe recipe){
+        recipeIds.add(recipe.id);
+        recipes.add(recipe);
+
+        updateDatabase();
+    }
+
+    public void removeRecipe(Recipe recipe){
+        recipeIds.remove(recipe.id);
+        recipes.remove(recipe);
+
+        updateDatabase();
+    }
+
+    private void updateDatabase(){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+        Map<String, Object> postValues = this.toMap();
+        mDatabase.updateChildren(postValues);
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("name", name);
+        result.put("recipeIds", recipeIds);
+        return result;
     }
 
     public void loadRecipes(){
@@ -59,6 +92,7 @@ public class User {
                     for(String recipeID : recipeIds){
                         if(postSnapshot.getKey().equals(recipeID)){
                             Recipe post = postSnapshot.getValue(Recipe.class);
+                            post.id = postSnapshot.getKey();
                             recipes.add(post);
                         }
                     }
