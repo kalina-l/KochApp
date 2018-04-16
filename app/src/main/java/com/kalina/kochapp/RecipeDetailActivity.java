@@ -14,6 +14,8 @@ import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import java.util.Stack;
+
 /**
  * An activity representing a single Recipe detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
@@ -21,6 +23,8 @@ import android.widget.ImageView;
  * in a {@link RecipeListActivity}.
  */
 public class RecipeDetailActivity extends AppCompatActivity {
+
+    public static Stack<Class<?>> parents = new Stack<Class<?>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +114,13 @@ public class RecipeDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, RecipeListActivity.class));
+
+            Intent parentActivityIntent = new Intent(this, parents.pop());
+            parentActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(parentActivityIntent);
+            finish();
+
+            //navigateUpTo(new Intent(this, RecipeListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

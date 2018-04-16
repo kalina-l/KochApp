@@ -1,5 +1,6 @@
 package com.kalina.kochapp;
 
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -10,6 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -67,21 +69,21 @@ public class RecipeList {
         pg.setVisibility(View.INVISIBLE);
     }
 
-    public static void createRecipes(){
+    /*public static void createRecipes(){
         List<Ingredient> newIngredients = new ArrayList<>();
         newIngredients.add(new Ingredient(3d, "", "Zuchinni"));
         newIngredients.add(new Ingredient(3d, "", "Knoblauchzehen"));
         newIngredients.add(new Ingredient(2d, "EL", "EL Creme Fraiche"));
         newIngredients.add(new Ingredient(2d, "EL", "Italienische Kräuter"));
         newIngredients.add(new Ingredient(2d, "EL", "Parmesan"));
-        Recipe recipe = Recipe.writeNewRecipe("Zucchini-Nudeln", newIngredients,
+        Recipe.writeNewRecipe("Zucchini-Nudeln", newIngredients,
                 "Die Enden der gewaschenen Zucchini abschneiden. Die Zucchini dann längs mit einem Juliennehobel in dünne, lange Streifen schneiden und beiseite stellen.\n" +
                         "\n" +
                         "Das Olivenöl in einer beschichteten Pfanne erhitzen, zwischenzeitlich die Knoblauchzehen abziehen und fein würfeln. Die Knoblauchwürfel im Olivenöl anbraten, jedoch nicht braun werden lassen (der Knoblauch wird sonst bitter!). Anschließend die Hitze reduzieren und die Zucchinistreifen hinzugeben.\n" +
                         "\n" +
                         "Unter gelegentlichem Wenden die \"Zucchininudeln\" ca. 10 Minuten garen, sodass die Zucchinispaghetti noch bissfest sind. Mit Salz und Pfeffer würzen.\n" +
                         "\n" +
-                        "2 EL Crème fraîche, 2 EL italienische Kräuter und 2 EL geriebenen Parmesan unterrühren, kurz miterhitzen und anschließend servieren.", "gs://kochapp-a8b3f.appspot.com/receipt_images/Rezept3.jpg", false);
+                        "2 EL Crème fraîche, 2 EL italienische Kräuter und 2 EL geriebenen Parmesan unterrühren, kurz miterhitzen und anschließend servieren.", Uri.fromFile(new File("gs://kochapp-a8b3f.appspot.com/receipt_images/Rezept3.jpg")), false);
 
 
         newIngredients = new ArrayList<>();
@@ -90,10 +92,10 @@ public class RecipeList {
         newIngredients.add(new Ingredient(250d, "ml", "Bier"));
         newIngredients.add(new Ingredient(2d, "", "Eier"));
         newIngredients.add(new Ingredient(200d, "g", "Mehl"));
-        recipe = Recipe.writeNewRecipe("Apfelküchle",  newIngredients,
+        Recipe.writeNewRecipe("Apfelküchle",  newIngredients,
                 "Eier, Zucker und Hefeweizen miteinander vermischen und soviel Mehl hinzugeben bis der Teig zähflüssig wird.\n" +
                         "3 Äpfel waschen, schälen und in Ringe schneiden. Apfelringe im Teig wenden und in einer Friteuse oder einer Pfanne mit reichlich Öl braten bis sie goldbraun sind. Abtropfen lassen und mit Zucker und Zimt bestreut servieren. Dazu passt Vanilleeis.\n" +
-                        "Tipp: Die Apfelküchle lassen sich hervorragend vorbereiten und später in der Mikrowelle aufwärmen..", "gs://kochapp-a8b3f.appspot.com/receipt_images/Rezept1.png", false);
+                        "Tipp: Die Apfelküchle lassen sich hervorragend vorbereiten und später in der Mikrowelle aufwärmen..", Uri.fromFile(new File("gs://kochapp-a8b3f.appspot.com/receipt_images/Rezept1.png")), false);
 
 
         newIngredients = new ArrayList<>();
@@ -102,7 +104,7 @@ public class RecipeList {
         newIngredients.add(new Ingredient(5d, "EL", "Olivenöl"));
         newIngredients.add(new Ingredient(2d, "", "Ciabatta"));
         newIngredients.add(new Ingredient(1d, "TL", "Gewürzmischung"));
-        recipe = Recipe.writeNewRecipe("Bruschetta",  newIngredients,
+        Recipe.writeNewRecipe("Bruschetta",  newIngredients,
                 "Zuerst die Tomaten waschen, vom Grün befreien, halbieren und dann in kleine Würfel schneiden. Dann den Knoblauch sehr klein schneiden, zu den Tomatenstücken geben und mit gut 3 EL Öl sowie 1 - 2 TL Tomatengewürzsalz mischen. Unbedingt mindestens 2 Stunden im Kühlschrank ziehen lassen.\n" +
                         "\n" +
                         "Den Backofen auf 180 - 200 °C (Umluft) vorheizen, die Tomatenstücke aus dem Kühlschrank nehmen. \n" +
@@ -113,10 +115,10 @@ public class RecipeList {
                         "\n" +
                         "Die Ciabattascheiben aus dem Ofen holen und mit den Tomaten-Knoblauch Gemisch belegen, 1/2 - 1 EL pro Scheibe.\n" +
                         "\n" +
-                        "Gelingt immer, toll für die Grillsaison, lässt sich gut vorbereiten, wenn Gäste kommen, und ist rein vegetarisch.", "gs://kochapp-a8b3f.appspot.com/receipt_images/Rezept2.png", false);
-    }
+                        "Gelingt immer, toll für die Grillsaison, lässt sich gut vorbereiten, wenn Gäste kommen, und ist rein vegetarisch.", Uri.fromFile(new File("gs://kochapp-a8b3f.appspot.com/receipt_images/Rezept2.png")), false);
+    }*/
 
-    private static void addGlobalRecipe(Recipe item) {
+    public static void addGlobalRecipe(Recipe item) {
         ALL_RECIPES.add(item);
         ALL_RECIPES_MAP.put(item.id, item);
     }

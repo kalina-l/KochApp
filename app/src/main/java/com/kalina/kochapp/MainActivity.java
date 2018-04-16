@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        RecipeDetailActivity.parents.push(getClass());
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void fillRecipeList(){
-        RecipeList.createRecipes();
+        //RecipeList.createRecipes();
         Log.d("MSG:", "Rezepte erzeugt.");
     }
 

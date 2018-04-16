@@ -35,6 +35,7 @@ public class RecipeListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_activity_list);
+        RecipeDetailActivity.parents.push(getClass());
 
         View recyclerView = findViewById(R.id.recipe_list);
         assert recyclerView != null;

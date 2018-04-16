@@ -31,7 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint='z.B. "Vegetarische Lasagne"' />
+            android:hint='z.B. "Vegetarische Lasagne"'
+            android:maxLines="1" />
 
         <TextView
             android:id="@+id/image_header"
@@ -126,6 +127,19 @@
             android:inputType="textMultiLine"
             android:text="Beschreibung" />
 
+        <TextView
+            android:id="@+id/privacy_header"
+            style="@style/Header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Privat?" />
+
+        <CheckBox
+            android:text="Ja! (Nur du bist berechtigt das Rezept zu sehen.)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/privacy_checkBox" />
+
         <Button
             android:text="Erstelle das Rezept"
             android:layout_width="wrap_content"
@@ -133,5 +147,23 @@
             android:id="@+id/save_recipe_button"
             android:layout_gravity="right"
             android:layout_marginTop="10dp" />
+
+        <FrameLayout
+            android:id="@+id/progressBarHolder"
+            android:animateLayoutChanges="true"
+            android:visibility="gone"
+            android:alpha="0.4"
+            android:background="#000000"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:layout_gravity="center" />
+        </FrameLayout>
+
     </LinearLayout>
 </ScrollView>
